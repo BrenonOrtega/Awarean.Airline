@@ -1,5 +1,3 @@
-using System;
-
 namespace Awarean.Airline.Domain;
 
 public interface IEntity<out T>
@@ -11,9 +9,15 @@ public interface IEntity<out T>
 
 public abstract class Entity<T> : IEntity<T> 
 {
+    protected Entity(T id) => Id = id;
+
     public virtual T Id { get; } = default(T);
-    public virtual DateTime? CreatedAt { get; protected set; }
-    public virtual DateTime? UpdatedAt { get; protected set; }
+
+    public virtual DateTime? CreatedAt { get; protected set; } = DateTime.UtcNow;
+
+    public virtual DateTime? UpdatedAt { get; protected set; } = DateTime.UtcNow;
 
     public DateTime? HasBeenUpdated() => UpdatedAt = DateTime.UtcNow;
+
+    protected void RaiseEvent(IEvent @event) => DomainEvents.Raise(@event);
 }
