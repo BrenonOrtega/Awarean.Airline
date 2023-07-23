@@ -1,3 +1,4 @@
+using Awarean.Airline.Domain.Entities.Events;
 using Awarean.Airline.Domain.ValueObjects;
 
 namespace Awarean.Airline.Domain.Entities;
@@ -23,4 +24,13 @@ public class Flight : Entity<int>
     public IataLocation ArrivalAirport { get; private set; }
 
     public Aircraft Aircraft { get; private set; }
+
+    internal void AssignTo(Aircraft aircraft)
+    {
+        if (Aircraft == aircraft)
+            return;
+
+        Aircraft = aircraft;
+        DomainEvents.Raise(new AircraftAssignedToFlightEvent(Id, aircraft.Id));
+    }
 }

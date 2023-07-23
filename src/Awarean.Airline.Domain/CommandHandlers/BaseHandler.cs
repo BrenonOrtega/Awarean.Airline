@@ -27,7 +27,7 @@ public abstract class BaseHandler<TCommand, TResult> : IDomainHandler<TCommand, 
         try
         {
             var handleResult = await InternalHandle(command);
-            result = await HandleResult(result, handleResult);
+            result = HandleResult(result, handleResult);
         }
         catch (Exception ex)
         {
@@ -37,17 +37,15 @@ public abstract class BaseHandler<TCommand, TResult> : IDomainHandler<TCommand, 
         return result;
     }
 
-
-    private async Task<TResult?> HandleResult(TResult? result, Result<TResult> handleResult)
+    private TResult? HandleResult(TResult? result, Result<TResult> handleResult)
     {
-        if (handleResult.IsSuccess is false)
+        if (handleResult.IsSuccess)
         {
-            _transaction.Rollback();
+            _transaction.Commit();
         }
         else
         {
-            await DispatchEvents();
-            _transaction.Commit();
+            _transaction.Rollback();
         }
 
         result = handleResult.Value;

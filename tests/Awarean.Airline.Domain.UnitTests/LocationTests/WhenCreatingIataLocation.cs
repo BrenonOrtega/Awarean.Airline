@@ -30,9 +30,7 @@ namespace Awarean.Airline.Domain.UnitTests.LocationTests
         {
             var location = new IataLocation(validCode);
 
-            location.Code.Should().Be(validCode);
+            location.Code.Should().Be(validCode.ToUpper());
         }
-
-        
     }
 }

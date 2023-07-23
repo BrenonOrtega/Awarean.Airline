@@ -8,7 +8,8 @@ internal static class DomainEvents
     
     public static IReadOnlyCollection<IEvent> GetUncommitedEvents()
     {
-        var allEvents = events.AsReadOnly();
+        var allEvents = new IEvent[events.Count];
+        events.CopyTo(allEvents);
         events.Clear();
 
         return allEvents;
