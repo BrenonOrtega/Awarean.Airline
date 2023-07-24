@@ -1,11 +1,12 @@
 using Awarean.Airline.Domain.Entities.Events;
+using Awarean.Airline.Domain.Events;
 using Awarean.Airline.Domain.ValueObjects;
 
 namespace Awarean.Airline.Domain.Entities;
 
 public class Flight : Entity<int>
 {
-    public Flight(int id, DateTime departure, IataLocation departureAirport, DateTime arrival, IataLocation arrivalAirport, Aircraft aircraft=null)
+    public Flight(int id, DateTime departure, IataLocation departureAirport, DateTime arrival, IataLocation arrivalAirport, Aircraft? aircraft = null)
         : base(id)
     {
         Departure = departure;
@@ -23,7 +24,7 @@ public class Flight : Entity<int>
 
     public IataLocation ArrivalAirport { get; private set; }
 
-    public Aircraft Aircraft { get; private set; }
+    public Aircraft? Aircraft { get; private set; }
 
     internal void AssignTo(Aircraft aircraft)
     {
@@ -32,5 +33,11 @@ public class Flight : Entity<int>
 
         Aircraft = aircraft;
         DomainEvents.Raise(new AircraftAssignedToFlightEvent(Id, aircraft.Id));
+    }
+
+    public void DoFlightUpdate(Action updateAction)
+    {
+        updateAction.Invoke();
+        DomainEvents.Raise(new FlightWasUpdatedEvent(Id));
     }
 }

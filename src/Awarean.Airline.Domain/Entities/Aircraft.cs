@@ -32,9 +32,13 @@ public class Aircraft : Entity<int>
     {
         if (flight is null)
             return Result.Fail("NULL_FLIGHT", "Cannot add a null flight to aircraft");
+        var added = false;
 
-        var added = Flights.Add(flight);
-        flight.AssignTo(this);
+        DoAircraftUpdate(() =>
+        {
+            var added = Flights.Add(flight);
+            flight.AssignTo(this);
+        });
 
         if (added)
         {
@@ -45,9 +49,9 @@ public class Aircraft : Entity<int>
         return Result.Fail("FLIGHT_NOT_ADDED", "Flight was not added to aircraft");
     }
 
-    public void DoFlightUpdate(Action updateAction)
+    public void DoAircraftUpdate(Action updateAction)
     {
         updateAction.Invoke();
-        DomainEvents.Raise(new FlightWasUpdatedEvent(Id));
+        DomainEvents.Raise(new AircraftWasUpdatedEvent(Id));
     }
 }
