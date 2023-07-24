@@ -1,8 +1,8 @@
 namespace Awarean.Airline.Domain.Events;
 
-internal class FlightAddedToAicraftEvent : Event
+internal class FlightAssignedToAircraftEvent : Event
 {
-    public FlightAddedToAicraftEvent(int flightId, int aircraftId)
+    public FlightAssignedToAircraftEvent(int flightId, int aircraftId)
     {
         this.FlightId = flightId;
         this.AircraftId = aircraftId;

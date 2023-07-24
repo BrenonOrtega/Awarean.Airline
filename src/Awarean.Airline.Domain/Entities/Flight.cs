@@ -5,14 +5,14 @@ namespace Awarean.Airline.Domain.Entities;
 
 public class Flight : Entity<int>
 {
-    public Flight(int id, DateTime departure, IataLocation departureAirport, DateTime arrival, IataLocation arrivalAirport, Aircraft aircraft)
+    public Flight(int id, DateTime departure, IataLocation departureAirport, DateTime arrival, IataLocation arrivalAirport, Aircraft aircraft=null)
         : base(id)
     {
         Departure = departure;
         DepartureAirport = departureAirport ?? throw new ArgumentNullException(nameof(departureAirport));
         Arrival = arrival;
         ArrivalAirport = arrivalAirport ?? throw new ArgumentNullException(nameof(arrivalAirport));
-        Aircraft = aircraft ?? throw new ArgumentNullException(nameof(aircraft));
+        Aircraft = aircraft;
     }
 
     public DateTime Departure { get; set; }
