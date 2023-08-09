@@ -7,7 +7,7 @@ public interface IEvent
 
 public abstract class Event : IEvent
 {
-    public virtual string EventType => this.GetType().FullName;
+    public virtual string EventType => GetType().FullName;
 }
 
 public interface IEvent<TId> : IEvent

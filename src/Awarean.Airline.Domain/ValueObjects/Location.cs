@@ -1,3 +1,5 @@
+using Awarean.Airline.Domain.ValueObjects.Attributes;
+
 namespace Awarean.Airline.Domain.ValueObjects;
 
 public abstract record Location : IEquatable<string>
@@ -22,6 +24,6 @@ public abstract record Location : IEquatable<string>
         return Code.Equals(other);
     }
 
+    [PersistenceConvertion]
     public static implicit operator string(Location location) => location?.Code;
-    //public static implicit operator Location(string @string) => Validate(@string) ? new Location(@string) : throw new DomainException($"Invalid Code for location type");
 }

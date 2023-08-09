@@ -1,3 +1,5 @@
+using System.Globalization;
+using System.Runtime.Serialization;
 using Awarean.Airline.Domain.Entities.Events;
 using Awarean.Airline.Domain.Events;
 using Awarean.Airline.Domain.ValueObjects;
@@ -6,38 +8,80 @@ namespace Awarean.Airline.Domain.Entities;
 
 public class Flight : Entity<int>
 {
-    public Flight(int id, DateTime departure, IataLocation departureAirport, DateTime arrival, IataLocation arrivalAirport, Aircraft? aircraft = null)
-        : base(id)
+    public Flight(DateTime departure, IataLocation departureAirport, DateTime arrival,
+        IataLocation arrivalAirport, int? id = null, int? aircraftId = null,
+        Aircraft? aircraft = null)
+        : base(id ?? 0)
     {
-        Departure = departure;
+        Departure = departure.ToUniversalTime();
         DepartureAirport = departureAirport ?? throw new ArgumentNullException(nameof(departureAirport));
-        Arrival = arrival;
+        Arrival = arrival.ToUniversalTime();
         ArrivalAirport = arrivalAirport ?? throw new ArgumentNullException(nameof(arrivalAirport));
+        AircraftId = aircraftId ?? 0;
         Aircraft = aircraft;
     }
 
-    public DateTime Departure { get; set; }
+    public Flight(long id, string departure, string arrival, string departureAirport, string arrivalAirport, string createdAt, string updatedAt, long aircraftId)
+        : base((int)id)
+    {
+        Departure = DateTime.Parse(departure).ToUniversalTime();
+        Arrival = DateTime.Parse(arrival).ToUniversalTime();
+        ArrivalAirport = arrivalAirport;
+        DepartureAirport = departureAirport;
+        CreatedAt = DateTime.Parse(createdAt).ToUniversalTime();
+        UpdatedAt = DateTime.Parse(updatedAt).ToUniversalTime();
+        AircraftId = (int)aircraftId;
+    }
+
+    public DateTime Departure { get; private set; }
 
     public IataLocation DepartureAirport { get; private set; }
 
-    public DateTime Arrival { get; set; }
+    public DateTime Arrival { get; private set; }
 
     public IataLocation ArrivalAirport { get; private set; }
+
+    public int AircraftId { get; private set; }
 
     public Aircraft? Aircraft { get; private set; }
 
     internal void AssignTo(Aircraft aircraft)
     {
-        if (Aircraft == aircraft)
+        if (aircraft is null)
             return;
 
-        Aircraft = aircraft;
-        DomainEvents.Raise(new AircraftAssignedToFlightEvent(Id, aircraft.Id));
+        if (IsAssigned() is false)
+        {
+            DoFlightUpdate(() =>
+            {
+                Id = aircraft.Id;
+                Aircraft = aircraft;
+
+                DomainEvents.Raise(new AircraftAssignedToFlightEvent(Id, aircraft.Id));
+            });
+        }
+
+        if (Id == aircraft.Id && aircraft.IsEqual(Aircraft) is false)
+        {
+            Aircraft = aircraft;
+        }
     }
+
+    private bool IsAssigned() => AircraftId != default;
 
     public void DoFlightUpdate(Action updateAction)
     {
         updateAction.Invoke();
+        WasUpdated();
         DomainEvents.Raise(new FlightWasUpdatedEvent(Id));
+    }
+
+    public void HasId(int id)
+    {
+        if (id != default && id is not 0)
+        {
+            Id = id;
+            DomainEvents.Raise(new FlightWasCreatedEvent(Id));
+        }
     }
 }

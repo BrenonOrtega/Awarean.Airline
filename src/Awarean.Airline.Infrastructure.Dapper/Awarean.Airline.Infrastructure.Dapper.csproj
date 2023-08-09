@@ -2,6 +2,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Awarean.Airline.Domain\Awarean.Airline.Domain.csproj" />
+    <ProjectReference Include="..\Awarean.Airline.Extensions\Awarean.Airline.Extensions.csproj" />
   </ItemGroup>
 
   <ItemGroup>
