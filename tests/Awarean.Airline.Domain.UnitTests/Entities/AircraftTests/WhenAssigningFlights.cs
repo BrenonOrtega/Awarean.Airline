@@ -10,22 +10,22 @@ public class WhenAssigningFlights
     [Fact]
     public void Valid_Flight_Should_Be_Assigned()
     {
-        var flight = new Flight(1, DateTime.Now.AddHours(-3), "MAD", DateTime.Now.AddMinutes(1), "DUB");
+        var flight = new Flight(DateTime.Now.AddHours(-3), "MAD", DateTime.Now.AddMinutes(1), "DUB", 1);
 
-        var aircraft = new Aircraft(1, "Passenger", "Boeing 747", "MAD");
+        var aircraft = new Aircraft("Passenger", "Boeing 747", "MAD");
 
         aircraft.AddFlight(flight);
 
-        flight.Aircraft.Should().Be(aircraft);
+        flight.Aircraft.Should().BeEquivalentTo(aircraft);
         aircraft.Flights.Should().Contain(flight);
     }
 
     [Fact]
     public void Assigning_Valid_Flights_Should_Raise_Event()
     {
-        var flight = new Flight(1, DateTime.Now.AddHours(-3), "MAD", DateTime.Now.AddMinutes(1), "DUB");
+        var flight = new Flight(DateTime.Now.AddHours(-3), "MAD", DateTime.Now.AddMinutes(1), "DUB", 1);
 
-        var aircraft = new Aircraft(1, "Passenger", "Boeing 747", "MAD");
+        var aircraft = new Aircraft("Passenger", "Boeing 747", "MAD");
 
         aircraft.AddFlight(flight);
 
