@@ -6,9 +6,9 @@ namespace Awarean.Airline.Domain.CommandHandlers;
 
 public abstract class BaseHandler<TCommand, TResult> : IDomainHandler<TCommand, TResult>
 {
-    private readonly IMediator _mediator;
+    protected readonly IMediator _mediator;
     private readonly IDomainTransaction _transaction;
-    private readonly ILogger _logger;
+    protected readonly ILogger _logger;
 
     public BaseHandler(IMediator mediator, IDomainTransaction transaction, ILogger logger)
     {
@@ -26,8 +26,8 @@ public abstract class BaseHandler<TCommand, TResult> : IDomainHandler<TCommand, 
         _transaction.Start();
         try
         {
-            var handleResult = await InternalHandle(command);
-            result = HandleResult(result, handleResult);
+            var handleResult = await HandleCommandAsync(command);
+            result = await HandleResult(result, handleResult);
         }
         catch (Exception ex)
         {
@@ -37,11 +37,20 @@ public abstract class BaseHandler<TCommand, TResult> : IDomainHandler<TCommand, 
         return result;
     }
 
-    private TResult? HandleResult(TResult? result, Result<TResult> handleResult)
+    private async Task<Result<TResult>> HandleCommandAsync(TCommand? command)
+    {
+        if (command is null)
+            return Result.Fail<TResult>("NULL_COMMAND", $"Provided command of type {typeof(TCommand).FullName} is null");
+
+        return await InternalHandle(command);
+    }
+
+    private async Task<TResult?> HandleResult(TResult? result, Result<TResult> handleResult)
     {
         if (handleResult.IsSuccess)
         {
             _transaction.Commit();
+            await DispatchEvents();
         }
         else
         {

@@ -1,4 +1,5 @@
 using Awarean.Airline.Domain.CommandHandlers;
+using FluentAssertions;
 using MediatR;
 using Microsoft.Extensions.Logging;
 using NSubstitute;
@@ -46,6 +47,17 @@ public class WhenHandlingCommand
         var result = await handler.Handle(command);
 
         transaction.Received(1).Start();
+        transaction.Received(1).Rollback();
+    }
+
+    [Fact]
+    public async Task Null_Command_Should_Fail()
+    {
+        var handler = GetDefaultHandler();
+
+        var result = await handler.Handle(null);
+
+        result.Should().Be(FakeResponse.Empty);
         transaction.Received(1).Rollback();
     }
 
