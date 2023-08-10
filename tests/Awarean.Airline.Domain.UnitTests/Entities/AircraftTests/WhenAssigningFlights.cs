@@ -14,7 +14,7 @@ public class WhenAssigningFlights
 
         var aircraft = new Aircraft("Passenger", "Boeing 747", "MAD");
 
-        aircraft.AddFlight(flight);
+        aircraft.Assign(flight);
 
         flight.Aircraft.Should().BeEquivalentTo(aircraft);
         aircraft.Flights.Should().Contain(flight);
@@ -27,12 +27,12 @@ public class WhenAssigningFlights
 
         var aircraft = new Aircraft("Passenger", "Boeing 747", "MAD");
 
-        aircraft.AddFlight(flight);
+        aircraft.Assign(flight);
 
         var events = DomainEvents.GetUncommitedEvents();
 
-        events.Should().HaveCountGreaterThanOrEqualTo(1);
-        events.Should().Contain(@event => EventMatchingTypeAndIds(@event, flight, aircraft));
+        events.Should().HaveCountGreaterThanOrEqualTo(1)
+            .And.Contain(@event => EventMatchingTypeAndIds(@event, flight, aircraft));
     }
 
     private static bool EventMatchingTypeAndIds(IEvent @event, Flight flight, Aircraft aircraft)
