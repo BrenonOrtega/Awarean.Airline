@@ -1,6 +1,3 @@
-using System.Globalization;
-using System.Runtime.Serialization;
-using Awarean.Airline.Domain.Entities.Events;
 using Awarean.Airline.Domain.Events;
 using Awarean.Airline.Domain.ValueObjects;
 
@@ -52,29 +49,22 @@ public class Flight : Entity<int>
 
         if (IsAssigned() is false)
         {
-            DoFlightUpdate(() =>
+            DoEntityUpdate(() =>
             {
-                Id = aircraft.Id;
+                AircraftId = aircraft.Id;
                 Aircraft = aircraft;
 
-                DomainEvents.Raise(new AircraftAssignedToFlightEvent(Id, aircraft.Id));
+                RaiseEvent(new FlightAssignedToAircraftEvent(Id, aircraft.Id));
             });
         }
 
-        if (Id == aircraft.Id && aircraft.IsEqual(Aircraft) is false)
+        if (AircraftId == aircraft.Id && aircraft.IsEqual(Aircraft) is false)
         {
             Aircraft = aircraft;
         }
     }
 
     private bool IsAssigned() => AircraftId != default;
-
-    public void DoFlightUpdate(Action updateAction)
-    {
-        updateAction.Invoke();
-        WasUpdated();
-        DomainEvents.Raise(new FlightWasUpdatedEvent(Id));
-    }
 
     public void HasId(int id)
     {
@@ -84,4 +74,6 @@ public class Flight : Entity<int>
             DomainEvents.Raise(new FlightWasCreatedEvent(Id));
         }
     }
+
+    protected override Event CreateEntityUpdatedEvent() => new FlightWasUpdatedEvent(Id);
 }

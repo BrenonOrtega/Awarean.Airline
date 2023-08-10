@@ -1,3 +1,5 @@
+using System.Runtime.CompilerServices;
+
 namespace Awarean.Airline.Domain;
 
 public interface IEntity<out T>
@@ -7,7 +9,7 @@ public interface IEntity<out T>
     DateTime? UpdatedAt { get; }
 }
 
-public abstract class Entity<T> : IEntity<T> 
+public abstract class Entity<T> : IEntity<T>
 {
     protected Entity(T id) => Id = id;
 
@@ -20,4 +22,16 @@ public abstract class Entity<T> : IEntity<T>
     public DateTime? WasUpdated() => UpdatedAt = DateTime.UtcNow;
 
     protected void RaiseEvent(IEvent @event) => DomainEvents.Raise(@event);
+
+    protected abstract Event CreateEntityUpdatedEvent();
+
+    protected virtual void DoEntityUpdate(Action updateAction, [CallerMemberName] string callerName = null)
+    {
+        if (updateAction is null)
+            throw new InvalidOperationException($"Update Action of type {GetType().Name} invoked from {callerName} cannot be null");
+        
+        updateAction.Invoke();
+        WasUpdated();
+        RaiseEvent(CreateEntityUpdatedEvent());
+    }
 }
