@@ -49,8 +49,8 @@ public abstract class BaseHandler<TCommand, TResult> : IDomainHandler<TCommand, 
     {
         if (handleResult.IsSuccess)
         {
-            _transaction.Commit();
             await DispatchEvents();
+            _transaction.Commit();
         }
         else
         {
