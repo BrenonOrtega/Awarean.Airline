@@ -60,7 +60,7 @@ public static class ReflectionExtensions
         return method;
     }
 
-    private static BindingFlags bindingFlags = BindingFlags.Public | BindingFlags.FlattenHierarchy | BindingFlags.IgnoreCase;
+    private static readonly BindingFlags bindingFlags = BindingFlags.Public | BindingFlags.FlattenHierarchy | BindingFlags.IgnoreCase;
 
     private static MethodInfo? GetPersistenceConvertionMethod(Type type)
         => type.GetMethods(bindingFlags).SingleOrDefault(x => x.GetCustomAttribute<PersistenceConvertionAttribute>() is not null);
@@ -74,7 +74,7 @@ public static class ReflectionExtensions
                 TryGetImplicitOperatorForType(type, staticBindingFlags)
                 ?? TryGetExplicitOperatorForType(type, staticBindingFlags);
         }
-        catch (AmbiguousMatchException ame)
+        catch (AmbiguousMatchException)
         {
             throw new InvalidOperationException(
                 "Found more than one static operator methods that converts to primitive types. "
