@@ -8,9 +8,9 @@ namespace Awarean.Airline.Domain.UnitTests.CommandHandlers.BaseHandlerTests;
 
 public class WhenHandlingCommand
 {
-    IMediator mediator = Substitute.For<IMediator>();
-    IDomainTransaction transaction = Substitute.For<IDomainTransaction>();
-    ILogger<FakeCommandHandler> logger = Substitute.For<ILogger<FakeCommandHandler>>();
+    readonly IMediator mediator = Substitute.For<IMediator>();
+    readonly IDomainTransaction transaction = Substitute.For<IDomainTransaction>();
+    readonly ILogger<FakeCommandHandler> logger = Substitute.For<ILogger<FakeCommandHandler>>();
 
     [Fact]
     public async Task Successful_Result_Should_Dispatch_Events()

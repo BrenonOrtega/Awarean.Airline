@@ -54,7 +54,7 @@ public class Flight : Entity<int>
                 AircraftId = aircraft.Id;
                 Aircraft = aircraft;
 
-                RaiseEvent(new FlightAssignedToAircraftEvent(Id, aircraft.Id));
+                RaiseEvent(new FlightAssignedToAircraftEvent(aircraft.Id, Id));
             });
         }
 

@@ -2,6 +2,7 @@ using System.Linq.Expressions;
 using Awarean.Airline.Domain.Entities;
 using Awarean.Airline.Domain.Events;
 using FluentAssertions;
+using FluentAssertions.Collections;
 
 namespace Awarean.Airline.Domain.UnitTests.Entities.AircraftTests;
 
@@ -31,16 +32,7 @@ public class WhenAssigningFlights
 
         var events = DomainEvents.GetUncommitedEvents();
 
-        events.Should().HaveCountGreaterThanOrEqualTo(1)
-            .And.Contain(@event => EventMatchingTypeAndIds(@event, flight, aircraft));
-    }
-
-    private static bool EventMatchingTypeAndIds(IEvent @event, Flight flight, Aircraft aircraft)
-    {
-        bool isAssignedEvent = @event.EventType == typeof(FlightAssignedToAircraftEvent).FullName;
-        return isAssignedEvent
-                && @event is FlightAssignedToAircraftEvent assignedToAircraft
-                && assignedToAircraft?.AircraftId == aircraft.Id 
-                && assignedToAircraft?.FlightId == flight.Id;
+        events.Should().ContainEquivalentOf(new FlightAssignedToAircraftEvent(aircraft.Id, flight.Id))
+            .And.HaveCountGreaterThanOrEqualTo(1);
     }
 }
