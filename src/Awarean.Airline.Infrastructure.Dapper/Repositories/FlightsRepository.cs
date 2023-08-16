@@ -71,7 +71,7 @@ namespace Awarean.Airline.Infrastructure.Dapper.Repositories
             if (flight is null)
                 return (false, -1);
 
-            var (sql, parameters) = flight.GetInsert();
+            var (sql, parameters) = flight.GetInsertExcludingId();
 
             var id = await connection.ExecuteScalarAsync<int>(sql, parameters, transaction);
 
