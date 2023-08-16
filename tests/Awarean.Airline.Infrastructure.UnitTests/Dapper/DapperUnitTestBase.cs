@@ -22,17 +22,23 @@ public abstract class DapperUnitTestBase : IDisposable
         InitializeAsync().Wait();
     }
 
+    protected virtual Task ExecuteDisposeInTransactionAsync() => Task.CompletedTask;
+
     public virtual void Dispose()
     {
         transaction.Start();
 
-        connection.ExecuteAsync(
-                @$"DROP TABLE {nameof(Aircraft)}s;
-                   DROP TABLE {nameof(Flight)}s; 
-                   DROP TABLE {nameof(Aircraft)}_{nameof(Flight)}s;")
+        Task.WhenAll(
+                connection.ExecuteAsync(
+                    @$"DROP TABLE IF EXISTS {nameof(Aircraft)}s;
+                       DROP TABLE IF EXISTS {nameof(Flight)}s; 
+                       DROP TABLE IF EXISTS {nameof(Aircraft)}_{nameof(Flight)}s;"),
+                ExecuteDisposeInTransactionAsync())
             .GetAwaiter()
-            .GetResult();
-               
+            .GetResult()
+            ;
+
+            
         transaction.Commit();
         connection.Dispose();
         transaction.Dispose();

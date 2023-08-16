@@ -50,11 +50,9 @@ public sealed class DomainTransactionTests : DapperUnitTestBase
         await connection.ExecuteAsync($"INSERT INTO {TEST_TABLE} (ID) VALUES ({FIRST_TEST_TABLE_ENTRY})", transaction);
     }
 
-    private async Task<int> QueryTestTable() => await connection.QueryFirstAsync<int>($"SELECT * FROM {TEST_TABLE}");
+    private async Task<int> QueryTestTable() 
+        => await connection.QueryFirstAsync<int>($"SELECT * FROM {TEST_TABLE}");
 
-    public override void Dispose()
-    {
-        connection.ExecuteAsync($"DROP TABLE {TEST_TABLE}").GetAwaiter().GetResult();
-        base.Dispose();
-    }
+    protected override async Task ExecuteDisposeInTransactionAsync() 
+        => await connection.ExecuteAsync($"DROP TABLE IF EXISTS {TEST_TABLE}");
 }
