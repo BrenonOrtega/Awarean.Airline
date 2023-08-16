@@ -20,8 +20,6 @@ public class WhenUpdating
 
         var @event = DomainEvents.GetUncommitedEvents().First(x => x is FlightAssignedToAircraftEvent) as FlightAssignedToAircraftEvent;
         
-        @event.Should().NotBeNull()
-            .And.Match<FlightAssignedToAircraftEvent>(x => x.AircraftId == aircraft.Id)
-            .And.Match<FlightAssignedToAircraftEvent>(x => x.FlightId == flight.Id);
+        @event.Should().NotBeNull().And.BeEquivalentTo(new FlightAssignedToAircraftEvent(aircraft.Id, flight.Id));
     }
 }
