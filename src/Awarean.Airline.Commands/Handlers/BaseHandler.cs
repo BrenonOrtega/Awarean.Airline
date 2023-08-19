@@ -2,7 +2,7 @@ using Awarean.Sdk.Result;
 using MediatR;
 using Microsoft.Extensions.Logging;
 
-namespace Awarean.Airline.Domain.CommandHandlers;
+namespace Awarean.Airline.CommandHandlers;
 
 public abstract class BaseHandler<TCommand, TResult> : IDomainHandler<TCommand, TResult>
 {
@@ -19,7 +19,7 @@ public abstract class BaseHandler<TCommand, TResult> : IDomainHandler<TCommand, 
 
     protected abstract Task<Result<TResult>> InternalHandle(TCommand command);
 
-    public async Task<TResult> Handle(TCommand command)
+    public async Task<TResult?> Handle(TCommand command)
     {
         TResult? result = default;
 

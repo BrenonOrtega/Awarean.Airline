@@ -6,7 +6,8 @@ public abstract record Location : IEquatable<string>
 {
     protected abstract bool Validate(string locationCode);
     public string Code { get; }
-    public Location(string locationCode)
+    
+    protected Location(string locationCode)
     {
         if (string.IsNullOrEmpty(locationCode) || Validate(locationCode) is false)
         {
@@ -26,4 +27,13 @@ public abstract record Location : IEquatable<string>
 
     [PersistenceConvertion]
     public static implicit operator string(Location location) => location?.Code;
+
+    public static readonly Location Empty = new EmptyLocation();
+
+    private record EmptyLocation : Location
+    {
+        public EmptyLocation() : base("Empty") { }
+
+        protected override bool Validate(string locationCode) => true;
+    }
 }

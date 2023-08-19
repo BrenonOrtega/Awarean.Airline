@@ -5,7 +5,7 @@ using Awarean.Sdk.Result;
 using MediatR;
 using Microsoft.Extensions.Logging;
 
-namespace Awarean.Airline.Domain.CommandHandlers;
+namespace Awarean.Airline.CommandHandlers;
 
 public sealed class CreateAircraftCommandHandler : BaseHandler<CreateAircraftCommand, CreatedAircraftResult>
 {

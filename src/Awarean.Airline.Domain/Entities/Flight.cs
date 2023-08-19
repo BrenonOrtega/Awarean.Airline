@@ -1,5 +1,6 @@
 using Awarean.Airline.Domain.Events;
 using Awarean.Airline.Domain.ValueObjects;
+using Awarean.Sdk.Result;
 
 namespace Awarean.Airline.Domain.Entities;
 
@@ -42,29 +43,34 @@ public class Flight : Entity<int>
 
     public Aircraft? Aircraft { get; private set; }
 
-    internal void AssignTo(Aircraft aircraft)
+    internal Result AssignTo(Aircraft aircraft)
     {
-        if (aircraft is null)
-            return;
+        if (aircraft is null || aircraft.Id == 0)
+            return Result.Fail("INVALID_AIRCRAFT", $"Provided aircraft assigned to flight {Id} was null or was not valid.");
 
-        if (IsAssigned() is false)
+        var isAlreadyAssignedToAircraft = IsAlreadyAssignedTo(aircraft);
+
+        if (isAlreadyAssignedToAircraft is false)
         {
             DoEntityUpdate(() =>
             {
-                AircraftId = aircraft.Id;
-                Aircraft = aircraft;
-
+                AssignToAircraft(aircraft);
                 RaiseEvent(new FlightAssignedToAircraftEvent(aircraft.Id, Id));
             });
+
+            return Result.Success();
         }
 
-        if (AircraftId == aircraft.Id && aircraft.IsEqual(Aircraft) is false)
-        {
-            Aircraft = aircraft;
-        }
+        return Result.Fail("AIRCRAFT_ASSIGNMENT_FAIL", $"Aircraft {aircraft.Id} was not assigned to Flight {Id}.");
     }
 
-    private bool IsAssigned() => AircraftId != default;
+    private void AssignToAircraft(Aircraft aircraft)
+    {
+        AircraftId = aircraft.Id;
+        Aircraft = aircraft;
+    }
+
+    private bool IsAlreadyAssignedTo(Aircraft aircraft) => AircraftId == aircraft.Id;
 
     public void HasId(int id)
     {

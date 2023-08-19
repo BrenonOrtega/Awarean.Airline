@@ -6,6 +6,8 @@ namespace Awarean.Airline.Domain.Entities;
 
 public class Aircraft : Entity<int>, IEquatable<Aircraft>
 {
+    public static readonly Aircraft Empty = new("INVALID", "INVALID", IataLocation.Empty, 0);
+
     public Aircraft(string aircraftType, string model, IataLocation actualParkingLocation, int? id = null, IEnumerable<Flight> flights = null)
         : base(id ?? 0)
     {
@@ -38,7 +40,7 @@ public class Aircraft : Entity<int>, IEquatable<Aircraft>
         DoEntityUpdate(() =>
         {
             var added = Flights.Add(flight);
-            flight.AssignTo(this);
+            var assignResult = flight.AssignTo(this);
 
             if (added)
             {
