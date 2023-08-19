@@ -4,7 +4,7 @@ using MediatR;
 using Microsoft.Extensions.Logging;
 using NSubstitute;
 
-namespace Awarean.Airline.Domain.UnitTests.CommandHandlers.BaseHandlerTests;
+namespace Awarean.Airline.Commands.UnitTests.BaseHandlerTests;
 
 public class WhenHandlingCommand
 {

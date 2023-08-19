@@ -3,7 +3,7 @@ using Awarean.Sdk.Result;
 using MediatR;
 using Microsoft.Extensions.Logging;
 
-namespace Awarean.Airline.Domain.UnitTests.CommandHandlers.BaseHandlerTests;
+namespace Awarean.Airline.Commands.UnitTests.BaseHandlerTests;
 
 public class FakeCommandHandler : BaseHandler<FakeCommand, FakeResponse>
 {

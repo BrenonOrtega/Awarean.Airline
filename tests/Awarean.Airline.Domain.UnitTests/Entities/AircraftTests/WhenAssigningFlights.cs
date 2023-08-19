@@ -13,12 +13,23 @@ public class WhenAssigningFlights
     {
         var flight = new Flight(DateTime.Now.AddHours(-3), "MAD", DateTime.Now.AddMinutes(1), "DUB", 1);
 
-        var aircraft = new Aircraft("Passenger", "Boeing 747", "MAD");
+        var aircraft = new Aircraft("Passenger", "Boeing 747", "MAD", 1);
 
         aircraft.Assign(flight);
 
         flight.Aircraft.Should().BeEquivalentTo(aircraft);
         aircraft.Flights.Should().Contain(flight);
+    }
+
+    [Fact]
+    public void Invalid_Flights_Should_Not_Be_Assigned()
+    {
+        var aircraft = new Aircraft("Passenger", "Boeing 747", "MAD", 1);
+
+        var result = aircraft.Assign(null);
+
+        result.IsSuccess.Should().BeFalse();
+        aircraft.Flights.Should().NotContain(default(Flight));
     }
 
     [Fact]
