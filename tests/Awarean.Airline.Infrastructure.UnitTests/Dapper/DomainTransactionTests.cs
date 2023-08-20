@@ -44,11 +44,11 @@ public sealed class DomainTransactionTests : DapperUnitTestBase
         actual.Should().Be(expected);
     }
 
-    private async Task RunCommands(IDbTransaction transaction)
-    {
-        await connection.ExecuteAsync($"CREATE TABLE IF NOT EXISTS {TEST_TABLE} (ID VARCHAR PRIMARY KEY)", transaction);
-        await connection.ExecuteAsync($"INSERT INTO {TEST_TABLE} (ID) VALUES ({FIRST_TEST_TABLE_ENTRY})", transaction);
-    }
+    private async Task RunCommands(IDbTransaction transaction) 
+        => await connection.ExecuteAsync(
+            @$" CREATE TABLE IF NOT EXISTS {TEST_TABLE} (ID VARCHAR PRIMARY KEY);
+                INSERT INTO {TEST_TABLE} (ID) VALUES ({FIRST_TEST_TABLE_ENTRY})",
+            transaction);
 
     private async Task<int> QueryTestTable() 
         => await connection.QueryFirstAsync<int>($"SELECT * FROM {TEST_TABLE}");
