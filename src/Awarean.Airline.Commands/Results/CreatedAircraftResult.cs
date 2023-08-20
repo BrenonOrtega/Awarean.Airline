@@ -1,4 +1,4 @@
-namespace Awarean.Airline.Domain.CommandResults;
+namespace Awarean.Airline.Commands.Results;
 
 public class CreatedAircraftResult
 {

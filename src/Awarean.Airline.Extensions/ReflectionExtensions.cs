@@ -1,5 +1,4 @@
 using System.Reflection;
-using Awarean.Airline.Domain.ValueObjects.Attributes;
 
 namespace Awarean.Airline.Extensions;
 

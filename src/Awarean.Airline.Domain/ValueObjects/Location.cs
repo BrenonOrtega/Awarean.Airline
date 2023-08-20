@@ -1,4 +1,4 @@
-using Awarean.Airline.Domain.ValueObjects.Attributes;
+using Awarean.Airline.Extensions;
 
 namespace Awarean.Airline.Domain.ValueObjects;
 
@@ -6,15 +6,25 @@ public abstract record Location : IEquatable<string>
 {
     protected abstract bool Validate(string locationCode);
     public string Code { get; }
-    
+
     protected Location(string locationCode)
     {
-        if (string.IsNullOrEmpty(locationCode) || Validate(locationCode) is false)
+        if (string.IsNullOrEmpty(locationCode) || ValidateBase(locationCode) is false)
         {
             throw new DomainException($"{locationCode} is an invalid location Code.");
         }
 
-        this.Code = locationCode.ToUpper();
+        Code = locationCode.ToUpper();
+    }
+
+    private Location() => Code = "Empty";
+
+    private bool ValidateBase(string locationCode)
+    {
+        if (locationCode == Empty)
+            return true;
+
+        return Validate(locationCode);
     }
 
     public bool Equals(string? other)
@@ -30,10 +40,9 @@ public abstract record Location : IEquatable<string>
 
     public static readonly Location Empty = new EmptyLocation();
 
-    private record EmptyLocation : Location
+    protected record EmptyLocation : Location
     {
-        public EmptyLocation() : base("Empty") { }
-
+        public EmptyLocation() : base() { }
         protected override bool Validate(string locationCode) => true;
     }
 }

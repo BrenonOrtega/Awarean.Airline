@@ -1,5 +1,3 @@
-using System;
-
 namespace Awarean.Airline.Domain.ValueObjects;
 
 public record IataLocation : Location
@@ -11,4 +9,6 @@ public record IataLocation : Location
     protected override bool Validate(string locationCode) => locationCode?.Length == MAXIMUM_IATA_CODE_DIGITS;
 
     public static implicit operator IataLocation(string @string) => new IataLocation(@string);
+
+    public static new readonly IataLocation Empty = Location.Empty.Code;
 }
