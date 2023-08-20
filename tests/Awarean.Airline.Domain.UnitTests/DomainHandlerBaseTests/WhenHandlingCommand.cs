@@ -1,10 +1,11 @@
-using Awarean.Airline.Domain.CommandHandlers;
+using Awarean.Airline.Commands.Handlers;
+using Awarean.Airline.Domain;
 using FluentAssertions;
 using MediatR;
 using Microsoft.Extensions.Logging;
 using NSubstitute;
 
-namespace Awarean.Airline.Commands.UnitTests.BaseHandlerTests;
+namespace Awarean.Airline.Domain.UnitTests.DomainHandlerBaseTests;
 
 public class WhenHandlingCommand
 {
@@ -19,7 +20,7 @@ public class WhenHandlingCommand
 
         var handler = GetDefaultHandler();
 
-        var result = await handler.Handle(command);
+        var result = await handler.HandleAsync(command);
 
         await mediator.Received().Publish(Arg.Any<FakeEvent>(), Arg.Any<CancellationToken>());
     }
@@ -31,7 +32,7 @@ public class WhenHandlingCommand
 
         var handler = GetDefaultHandler();
 
-        var result = await handler.Handle(command);
+        var result = await handler.HandleAsync(command);
 
         transaction.Received(1).Start();
         transaction.Received(1).Commit();
@@ -44,7 +45,7 @@ public class WhenHandlingCommand
 
         var handler = GetDefaultHandler();
 
-        var result = await handler.Handle(command);
+        var result = await handler.HandleAsync(command);
 
         transaction.Received(1).Start();
         transaction.Received(1).Rollback();
@@ -55,13 +56,13 @@ public class WhenHandlingCommand
     {
         var handler = GetDefaultHandler();
 
-        var result = await handler.Handle(null);
+        var result = await handler.HandleAsync(null);
 
         result.Should().Be(FakeResponse.Empty);
         transaction.Received(1).Rollback();
     }
 
-    private BaseHandler<FakeCommand, FakeResponse> GetDefaultHandler()
+    private DomainHandlerBase<FakeCommand, FakeResponse> GetDefaultHandler()
     {
         var handler = new FakeCommandHandler(mediator, transaction, logger);
 

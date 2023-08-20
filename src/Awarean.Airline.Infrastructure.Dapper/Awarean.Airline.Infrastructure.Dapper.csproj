@@ -1,19 +1,22 @@
 <Project Sdk="Microsoft.NET.Sdk">
-
-  <ItemGroup>
-    <ProjectReference Include="..\Awarean.Airline.Domain\Awarean.Airline.Domain.csproj" />
-    <ProjectReference Include="..\Awarean.Airline.Extensions\Awarean.Airline.Extensions.csproj" />
-  </ItemGroup>
+  <PropertyGroup>
+    <TargetFramework>net7.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="Dapper" Version="2.0.143" />
     <PackageReference Include="Npgsql" Version="7.0.4" />
   </ItemGroup>
 
-  <PropertyGroup>
-    <TargetFramework>net7.0</TargetFramework>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>enable</Nullable>
-  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Awarean.Airline.Domain\Awarean.Airline.Domain.csproj" />
+    <ProjectReference Include="..\Awarean.Airline.Extensions\Awarean.Airline.Extensions.csproj" />
+  </ItemGroup>
+  
+  <ItemGroup>
+	<InternalsVisibleTo Include="Awarean.Airline.Infrastructure.UnitTests" />
+  </ItemGroup>
 
 </Project>

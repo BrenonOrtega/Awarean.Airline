@@ -1,19 +1,22 @@
 <Project Sdk="Microsoft.NET.Sdk">
-
   <PropertyGroup>
     <TargetFramework>net7.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
-  <ItemGroup>
+  <ItemGroup Label="Package References">
     <PackageReference Include="Awarean.Sdk.Result" Version="0.2.1" />
     <PackageReference Include="MediatR" Version="12.1.1" />
     <PackageReference Include="Microsoft.Extensions.Logging" Version="7.0.0" />
   </ItemGroup>
 
-<ItemGroup>
-  <InternalsVisibleTo Include="$(AssemblyName).UnitTests" />
-</ItemGroup>
+  <ItemGroup Label="Project References">
+    <ProjectReference Include="../Awarean.Airline.Extensions/Awarean.Airline.Extensions.csproj" />
+  </ItemGroup>
+
+  <ItemGroup Label="Test Visibility">
+    <InternalsVisibleTo Include="$(AssemblyName).UnitTests" />
+  </ItemGroup>
 
 </Project>

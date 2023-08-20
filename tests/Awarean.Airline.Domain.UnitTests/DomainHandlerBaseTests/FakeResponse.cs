@@ -1,4 +1,4 @@
-namespace Awarean.Airline.Commands.UnitTests.BaseHandlerTests;
+namespace Awarean.Airline.Domain.UnitTests.DomainHandlerBaseTests;
 
 public class FakeResponse
 {
