@@ -14,6 +14,7 @@ public class WhenQuerying : DapperUnitTestBase
 
         var result = await sut.GetById(int.MinValue);
 
-        result.Should().Be(Aircraft.Empty);
+        result.Should().BeEquivalentTo(Aircraft.Empty);
+        ReferenceEquals(result, Aircraft.Empty).Should().BeTrue();
     }
 }

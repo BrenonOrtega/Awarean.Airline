@@ -1,9 +1,7 @@
-using System.Data;
 using Awarean.Airline.Domain;
-using Awarean.Airline.Domain.Entities;
 using Awarean.Airline.Infrastructure.Dapper;
 using Awarean.Airline.Infrastructure.Dapper.Context;
-using Dapper;
+using System.Data;
 
 namespace Awarean.Airline.Infrastructure.UnitTests;
 
@@ -19,34 +17,21 @@ public abstract class DapperUnitTestBase : IDisposable
         this.initializer = new SqliteDatabaseInitializer();
         this.connection = connection ?? initializer.GetConnection();
         this.transaction = transaction ?? new DomainTransaction(this.connection);
-        InitializeAsync().Wait();
+        InitializeAsync().GetAwaiter().GetResult();
     }
 
     protected virtual Task ExecuteDisposeInTransactionAsync() => Task.CompletedTask;
 
-    public virtual void Dispose()
+    public void Dispose()
     {
-        transaction.Start();
+        ExecuteDisposeInTransactionAsync().GetAwaiter().GetResult();
+        DropDatabaseAsync().GetAwaiter().GetResult();
 
-        Task.WhenAll(
-                connection.ExecuteAsync(
-                    @$"DROP TABLE IF EXISTS {nameof(Aircraft)}s;
-                       DROP TABLE IF EXISTS {nameof(Flight)}s; 
-                       DROP TABLE IF EXISTS {nameof(Aircraft)}_{nameof(Flight)}s;"),
-                ExecuteDisposeInTransactionAsync())
-            .GetAwaiter()
-            .GetResult()
-            ;
-
-            
-        transaction.Commit();
-        connection.Dispose();
         transaction.Dispose();
         GC.SuppressFinalize(this);
     }
 
-    public async virtual Task InitializeAsync()
-    {
-        await initializer.InitializeDatabaseAsync();
-    }
+    public async virtual Task InitializeAsync() => await initializer.InitializeDatabaseAsync();
+
+    public async virtual Task DropDatabaseAsync() => await initializer.DropDatabaseAsync();
 }

@@ -25,8 +25,8 @@ public class AircraftsRepository : IAircraftsRepository
 
     public async Task<Aircraft> GetByFlight(string flightId)
     {
-        var sql = "SELECT * FROM Aircrafts WHERE FlightId = @flightId";
-        var queryResult = await connection.QueryFirstAsync<Aircraft>(sql, new { flightId });
+        var sql = "SELECT * FROM Aircrafts a LEFT JOIN Aircraft_Flights af ON a.Id = AircraftId WHERE FlightId = @flightId";
+        var queryResult = await connection.QueryFirstOrDefaultAsync<Aircraft>(sql, new { flightId });
 
         if (queryResult is not null)
             return queryResult;
@@ -34,8 +34,14 @@ public class AircraftsRepository : IAircraftsRepository
         return Aircraft.Empty;
     }
 
-    public Task<Aircraft> GetById(int aircraftId)
+    public async Task<Aircraft> GetById(int aircraftId)
     {
-        throw new NotImplementedException();
+        var sql = "SELECT * FROM Aircrafts WHERE Id = @aircraftId";
+        var queryResult = await connection.QueryFirstOrDefaultAsync<Aircraft>(sql, new { aircraftId });
+
+        if (queryResult is not null)
+            return queryResult;
+
+        return Aircraft.Empty;
     }
 }

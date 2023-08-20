@@ -4,5 +4,5 @@ public record AircraftFilter(
     string AircraftType,
     string Model,
     string ActualParkingLocation,
-    IEnumerable<string> flights
+    IEnumerable<string> Flights
 );

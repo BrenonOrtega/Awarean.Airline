@@ -41,5 +41,12 @@ public class SqliteDatabaseInitializer : DatabaseInitializer
         );",
     };
 
+    public override IEnumerable<string> DeletionScripts => new[] 
+    {
+        $"DROP TABLE IF EXISTS {nameof(Aircraft)}s;",
+        $"DROP TABLE IF EXISTS {nameof(Flight)}s;",
+        $"DROP TABLE IF EXISTS {nameof(Aircraft)}_{nameof(Flight)}s;"
+    };
+
     public override IDbConnection GetConnection() => new SQLiteConnection(ConnectionStringName);
 }
