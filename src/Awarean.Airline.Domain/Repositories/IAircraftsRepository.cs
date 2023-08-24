@@ -3,9 +3,8 @@ using Awarean.Airline.Domain.Repositories.Filters;
 
 namespace Awarean.Airline.Domain.Repositories;
 
-public interface IAircraftsRepository
+public interface IAircraftsRepository : IEntityRepository<Aircraft, int>
 {
-    Task<Aircraft> GetById(int aircraftId);
     Task<IEnumerable<Aircraft>> GetByFilter(AircraftFilter filter);
     Task<Aircraft> GetByFlight(string flightId);
 }

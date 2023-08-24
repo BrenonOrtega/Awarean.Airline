@@ -31,17 +31,20 @@ public class WhenUpdating
     public sealed class FakeEntity : Entity<int>
     {
         public FakeEntity(int id) : base(id) { }
-        protected override Event CreateEntityUpdatedEvent() => new FakeUpdatedEntityEvent(Id);
+        protected override Event GetEntityUpdatedEvent() => new FakeUpdatedEntityEvent(Id);
         public void UpdateId(int newId)
         {
             if (newId != Id)
                 DoEntityUpdate(() => Id = newId);
         }
+
+        protected override IEvent GetEntityCreatedEvent() => null;
     }
 
-    public class FakeUpdatedEntityEvent : Event<int>
+    public class FakeUpdatedEntityEvent : Event
     {
-        public FakeUpdatedEntityEvent(int id) => EntityId = id;
-        public override int EntityId { get; }
+        public FakeUpdatedEntityEvent(int id) => Id = id;
+
+        public int Id { get; }
     }
 }

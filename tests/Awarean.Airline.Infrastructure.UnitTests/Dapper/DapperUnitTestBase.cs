@@ -24,8 +24,10 @@ public abstract class DapperUnitTestBase : IDisposable
 
     public void Dispose()
     {
-        ExecuteDisposeInTransactionAsync().GetAwaiter().GetResult();
-        DropDatabaseAsync().GetAwaiter().GetResult();
+        Task.WhenAll(
+                ExecuteDisposeInTransactionAsync(),
+                DropDatabaseAsync()
+            ).GetAwaiter().GetResult();
 
         transaction.Dispose();
         GC.SuppressFinalize(this);

@@ -22,6 +22,16 @@ public class Aircraft : Entity<int>, IEquatable<Aircraft>
         }
     }
 
+    public Aircraft(long Id, string ActualParkingLocation, string AircraftType, string CreatedAt, string UpdatedAt, string Model)
+        : base((int)Id)
+    {
+        this.ActualParkingLocation = ActualParkingLocation;
+        this.AircraftType = AircraftType;
+        this.CreatedAt = DateTime.Parse(CreatedAt);
+        this.UpdatedAt = DateTime.Parse(UpdatedAt);
+        this.Model = Model;
+    }
+
     public string AircraftType { get; private set; }
 
     public string Model { get; private set; }
@@ -65,7 +75,7 @@ public class Aircraft : Entity<int>, IEquatable<Aircraft>
 
     public bool Equals(Aircraft? other)
     {
-        var hasEqualData = IsEqual(other) is false;
+        var hasEqualData = IsEqual(other);
 
         return hasEqualData && Id.Equals(other?.Id);
     }
@@ -89,5 +99,6 @@ public class Aircraft : Entity<int>, IEquatable<Aircraft>
         return sameTypes && sameLocation && sameModels && sameFlights;
     }
 
-    protected override Event CreateEntityUpdatedEvent() => new AircraftWasUpdatedEvent(Id);
+    protected override IEvent GetEntityCreatedEvent() => new AircraftWasCreatedEvent(Id);
+    protected override Event GetEntityUpdatedEvent() => new AircraftWasUpdatedEvent(Id);
 }

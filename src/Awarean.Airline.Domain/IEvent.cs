@@ -10,12 +10,3 @@ public abstract class Event : IEvent
     public virtual string EventType => GetType().FullName;
 }
 
-public interface IEvent<TId> : IEvent
-{
-    TId EntityId { get; }
-}
-
-public abstract class Event<TId> : Event, IEvent<TId>
-{
-    public abstract TId EntityId { get; }
-}

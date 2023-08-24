@@ -17,13 +17,19 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Awarean.Airline.Infrastruct
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Awarean.Airline.Infrastructure.UnitTests", "tests\Awarean.Airline.Infrastructure.UnitTests\Awarean.Airline.Infrastructure.UnitTests.csproj", "{4A809020-14FD-48D7-AD84-5AD73EFC3105}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Awarean.Airline.Extensions.UnitTests", "tests\Awarean.Airline.Extensions.UnitTests\Awarean.Airline.Extensions.UnitTests.csproj", "{16C82471-9D4F-434F-B983-F82E52A8048D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Awarean.Airline.Extensions.UnitTests", "tests\Awarean.Airline.Extensions.UnitTests\Awarean.Airline.Extensions.UnitTests.csproj", "{16C82471-9D4F-434F-B983-F82E52A8048D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Awarean.Airline.Extensions", "src\Awarean.Airline.Extensions\Awarean.Airline.Extensions.csproj", "{AF3E0830-77D3-4852-B923-9BCBB5CC619B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Awarean.Airline.Extensions", "src\Awarean.Airline.Extensions\Awarean.Airline.Extensions.csproj", "{AF3E0830-77D3-4852-B923-9BCBB5CC619B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Awarean.Airline.Commands", "src\Awarean.Airline.Commands\Awarean.Airline.Commands.csproj", "{866627E3-2A8C-4A9B-A141-A470D5EC3789}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Awarean.Airline.Commands", "src\Awarean.Airline.Commands\Awarean.Airline.Commands.csproj", "{866627E3-2A8C-4A9B-A141-A470D5EC3789}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Awarean.Airline.Commands.UnitTests", "tests\Awarean.Airline.Commands.UnitTests\Awarean.Airline.Commands.UnitTests.csproj", "{2CED817F-7299-4F1C-8B8F-821E46FAFE21}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Awarean.Airline.Commands.UnitTests", "tests\Awarean.Airline.Commands.UnitTests\Awarean.Airline.Commands.UnitTests.csproj", "{2CED817F-7299-4F1C-8B8F-821E46FAFE21}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Awarean.Airline.CommandsApi", "src\Awarean.Airline.CommandsApi\Awarean.Airline.CommandsApi.csproj", "{36219490-4E62-4D04-B0BB-4E4FE23BCBED}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Awarean.Airline.CommandsApi.IntegrationTests", "tests\Awarean.Airline.CommandsApi.IntegrationTests\Awarean.Airline.CommandsApi.IntegrationTests.csproj", "{9E70214C-1DC5-47FB-BCEE-8F7B4D5BF6D9}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Awarean.Airline.CommandsApi.UnitTests", "tests\Awarean.Airline.CommandsApi.UnitTests\Awarean.Airline.CommandsApi.UnitTests.csproj", "{D40E7933-5B97-4BE7-9B09-82E788E2B6CA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -67,6 +73,18 @@ Global
 		{2CED817F-7299-4F1C-8B8F-821E46FAFE21}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2CED817F-7299-4F1C-8B8F-821E46FAFE21}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2CED817F-7299-4F1C-8B8F-821E46FAFE21}.Release|Any CPU.Build.0 = Release|Any CPU
+		{36219490-4E62-4D04-B0BB-4E4FE23BCBED}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{36219490-4E62-4D04-B0BB-4E4FE23BCBED}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{36219490-4E62-4D04-B0BB-4E4FE23BCBED}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{36219490-4E62-4D04-B0BB-4E4FE23BCBED}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9E70214C-1DC5-47FB-BCEE-8F7B4D5BF6D9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9E70214C-1DC5-47FB-BCEE-8F7B4D5BF6D9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9E70214C-1DC5-47FB-BCEE-8F7B4D5BF6D9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9E70214C-1DC5-47FB-BCEE-8F7B4D5BF6D9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D40E7933-5B97-4BE7-9B09-82E788E2B6CA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D40E7933-5B97-4BE7-9B09-82E788E2B6CA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D40E7933-5B97-4BE7-9B09-82E788E2B6CA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D40E7933-5B97-4BE7-9B09-82E788E2B6CA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -81,5 +99,11 @@ Global
 		{AF3E0830-77D3-4852-B923-9BCBB5CC619B} = {6E030E3B-8220-4268-B41E-830632F9E970}
 		{866627E3-2A8C-4A9B-A141-A470D5EC3789} = {6E030E3B-8220-4268-B41E-830632F9E970}
 		{2CED817F-7299-4F1C-8B8F-821E46FAFE21} = {405FB043-45DD-4E62-98D9-7DE309AED0D6}
+		{36219490-4E62-4D04-B0BB-4E4FE23BCBED} = {6E030E3B-8220-4268-B41E-830632F9E970}
+		{9E70214C-1DC5-47FB-BCEE-8F7B4D5BF6D9} = {405FB043-45DD-4E62-98D9-7DE309AED0D6}
+		{D40E7933-5B97-4BE7-9B09-82E788E2B6CA} = {405FB043-45DD-4E62-98D9-7DE309AED0D6}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {208720BA-19A9-4C91-B443-604B0E56AA95}
 	EndGlobalSection
 EndGlobal

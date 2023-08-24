@@ -475,3 +475,4 @@ $RECYCLE.BIN/
 
 # Windows shortcuts
 *.lnk
+/tests/Awarean.Airline.Infrastructure.UnitTests/Database.db

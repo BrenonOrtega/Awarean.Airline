@@ -1,19 +1,25 @@
+using Awarean.Airline.Domain.Events;
 using System.Runtime.CompilerServices;
 
 namespace Awarean.Airline.Domain;
 
-public interface IEntity<out T>
+public interface IEntity<TId>
 {
-    T Id { get; }
+    TId Id { get; }
     DateTime? CreatedAt { get; }
     DateTime? UpdatedAt { get; }
+    void HasId(TId id);
 }
 
-public abstract class Entity<T> : IEntity<T>
+public abstract class Entity<TId> : IEntity<TId>
 {
-    protected Entity(T id) => Id = id;
+    protected abstract Event GetEntityUpdatedEvent();
 
-    public virtual T Id { get; protected set; } = default;
+    protected abstract IEvent GetEntityCreatedEvent();
+
+    protected Entity(TId id) => Id = id;
+
+    public virtual TId Id { get; protected set; } = default;
 
     public virtual DateTime? CreatedAt { get; protected set; } = DateTime.UtcNow;
 
@@ -21,9 +27,7 @@ public abstract class Entity<T> : IEntity<T>
 
     public DateTime? WasUpdated() => UpdatedAt = DateTime.UtcNow;
 
-    protected void RaiseEvent(IEvent @event) => DomainEvents.Raise(@event);
-
-    protected abstract Event CreateEntityUpdatedEvent();
+    protected virtual void RaiseEvent(IEvent @event) => DomainEvents.Raise(@event);
 
     protected virtual void DoEntityUpdate(Action updateAction, [CallerMemberName] string callerName = null)
     {
@@ -32,6 +36,15 @@ public abstract class Entity<T> : IEntity<T>
         
         updateAction.Invoke();
         WasUpdated();
-        RaiseEvent(CreateEntityUpdatedEvent());
+        RaiseEvent(GetEntityUpdatedEvent());
+    }
+
+    public void HasId(TId id)
+    {
+        if (id is not <= 0 and not "" and not null)
+        {
+            Id = id;
+            DomainEvents.Raise(GetEntityCreatedEvent());
+        }
     }
 }

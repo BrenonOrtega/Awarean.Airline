@@ -72,14 +72,8 @@ public class Flight : Entity<int>
 
     private bool IsAlreadyAssignedTo(Aircraft aircraft) => AircraftId == aircraft.Id;
 
-    public void HasId(int id)
-    {
-        if (id != default && id is not 0)
-        {
-            Id = id;
-            DomainEvents.Raise(new FlightWasCreatedEvent(Id));
-        }
-    }
+    protected override Event GetEntityCreatedEvent() => new FlightWasCreatedEvent(Id);
+    protected override Event GetEntityUpdatedEvent() => new FlightWasUpdatedEvent(Id);
 
-    protected override Event CreateEntityUpdatedEvent() => new FlightWasUpdatedEvent(Id);
+    public static readonly Flight Empty = new(DateTime.MinValue, IataLocation.Empty, DateTime.MinValue, IataLocation.Empty, -1);
 }

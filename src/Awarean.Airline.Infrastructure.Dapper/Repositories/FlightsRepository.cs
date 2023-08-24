@@ -1,23 +1,19 @@
 using System.Data;
-using System.Diagnostics;
+using Awarean.Airline.Domain;
 using Awarean.Airline.Domain.Entities;
 using Awarean.Airline.Domain.Repositories;
 using Awarean.Airline.Domain.ValueObjects;
-using Awarean.Airline.Infrastructure.Dapper.Extensions;
 using Dapper;
 
 namespace Awarean.Airline.Infrastructure.Dapper.Repositories
 {
-    public class FlightsRepository : IFlightsRepository
+    internal class FlightsRepository : EntityRepository<Flight, int>, IFlightsRepository
     {
-        private readonly IDbConnection connection;
-        public readonly IDbTransaction transaction;
-
-        public FlightsRepository(IDbConnection connection, IDbTransaction transaction)
+        public FlightsRepository(IDbConnection connection, IDomainTransaction transaction) : base(connection, transaction)
         {
-            this.connection = connection ?? throw new ArgumentNullException(nameof(connection));
-            this.transaction = transaction ?? throw new ArgumentNullException(nameof(transaction));
         }
+
+        protected override Flight Empty() => Flight.Empty;
 
         public async Task<IEnumerable<Flight>> GetByAircraft(int aircraftId)
         {
@@ -27,30 +23,9 @@ namespace Awarean.Airline.Infrastructure.Dapper.Repositories
 
             var sql = $"SELECT * FROM {nameof(Flight)}s WHERE AircraftId = @aircraftId";
 
-            var query = await connection.QueryAsync<Flight>(sql, parameters, transaction);
+            var query = await connection.QueryAsync<Flight>(sql, parameters, transaction.Context);
 
             return query;
-        }
-
-        public async Task<Flight> GetById(int flightId)
-        {
-            var parameters = new DynamicParameters();
-
-            parameters.Add("@flightId", flightId, DbType.Int32);
-
-            var sql = $"SELECT * FROM {nameof(Flight)}s WHERE Id = @flightId";
-
-            try
-            {
-                var query = await connection.QueryFirstOrDefaultAsync<Flight>(sql, parameters);
-
-                return query;
-            }
-            catch (Exception ex)
-            {
-                Debug.WriteLine(ex.Message, ex.GetType().Name);
-                throw;
-            }
         }
 
         public async Task<IEnumerable<Flight>> GetByLocations(IataLocation departure, IataLocation arrival)
@@ -61,26 +36,9 @@ namespace Awarean.Airline.Infrastructure.Dapper.Repositories
 
             var sql = $"SELECT * FROM {nameof(Flight)}s WHERE Departure = @departure OR Arrival = @arrival;";
 
-            var query = await connection.QueryAsync<Flight>(sql, parameters, transaction);
+            var query = await connection.QueryAsync<Flight>(sql, parameters, transaction.Context);
 
             return query;
-        }
-
-        public async Task<(bool success, int id)> Add(Flight flight)
-        {
-            if (flight is null)
-                return (false, -1);
-
-            var (sql, parameters) = flight.GetInsertExcludingId();
-
-            var id = await connection.ExecuteScalarAsync<int>(sql, parameters, transaction);
-
-            if (id == 0)
-                return (false, -1);
-
-            flight.HasId(id);
-
-            return (true, id);
         }
     }
 }
