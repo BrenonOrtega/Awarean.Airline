@@ -1,9 +1,8 @@
-using Awarean.Airline.Domain;
 using Awarean.Sdk.Result;
 using MediatR;
 using Microsoft.Extensions.Logging;
 
-namespace Awarean.Airline.Commands.Handlers;
+namespace Awarean.Airline.Domain.Handlers;
 
 public abstract class DomainHandlerBase<TCommand, TResult> : WrappedInTransactionHandler<TCommand>, IHandler<TCommand, TResult>
 {
@@ -24,7 +23,9 @@ public abstract class DomainHandlerBase<TCommand, TResult> : WrappedInTransactio
             handler: HandleCommandAsync,
             onSuccess: DispatchEventsAsync,
             // This is only to remove warnings, don`t really do anything.
-            onFailure: async () => await Task.Run(() => logger.LogError("Error happened handling domain Exception of Type {commandType}.", typeof(TCommand))));
+            onFailure: async () => await Task.Run(
+                () => logger.LogError("Error happened handling domain Exception of Type {commandType}.",typeof(TCommand)))
+        );
 
         return result;
     }

@@ -1,5 +1,4 @@
-using Awarean.Airline.Commands.Handlers;
-using Awarean.Airline.Domain;
+using Awarean.Airline.Domain.Handlers;
 using Awarean.Sdk.Result;
 using MediatR;
 using Microsoft.Extensions.Logging;
@@ -8,7 +7,8 @@ namespace Awarean.Airline.Domain.UnitTests.DomainHandlerBaseTests;
 
 public class FakeCommandHandler : DomainHandlerBase<FakeCommand, FakeResponse>
 {
-    public FakeCommandHandler(IMediator mediator, IDomainTransaction transaction, ILogger logger) : base(mediator, transaction, logger)
+    public FakeCommandHandler(IMediator mediator, IDomainTransaction transaction, ILogger logger) 
+        : base(mediator, transaction, logger)
     {
     }
 

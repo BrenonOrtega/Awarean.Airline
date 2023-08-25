@@ -1,8 +1,7 @@
-using Awarean.Airline.Domain;
 using Awarean.Sdk.Result;
 using Microsoft.Extensions.Logging;
 
-namespace Awarean.Airline.Commands.Handlers;
+namespace Awarean.Airline.Domain.Handlers;
 
 public class WrappedInTransactionHandler<TCommand>
 {

@@ -1,5 +1,4 @@
-using Awarean.Airline.Commands.Handlers;
-using Awarean.Airline.Domain;
+using Awarean.Airline.Domain.Handlers;
 using FluentAssertions;
 using MediatR;
 using Microsoft.Extensions.Logging;
